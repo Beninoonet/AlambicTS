@@ -1,8 +1,16 @@
 import { Listener } from '@sapphire/framework';
-import type { VoiceState } from 'discord.js';
+import type { VoiceState, Client } from 'discord.js';
 
-export class ReadyListener extends Listener {
-    public async run(oldUser: VoiceState, newUser: VoiceState,) {
+export class VoiceStateListener extends Listener {
+    public constructor(context: Listener.Context, options: Listener.Options) {
+        super(context, {
+            ...options,
+            once: true,
+            event: 'voiceStateUpdate'
+        });
+    }
+    run(oldUser: VoiceState, newUser: VoiceState, client: Client) {
+
         let newUserChannel = newUser.channelId;
         let oldUserChannel = oldUser.channelId;
 
@@ -13,4 +21,7 @@ export class ReadyListener extends Listener {
             console.log("Quit")
         }
     }
+
 }
+
+
