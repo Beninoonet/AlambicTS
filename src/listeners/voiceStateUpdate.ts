@@ -1,5 +1,5 @@
 import { Listener } from '@sapphire/framework';
-import { WebhookClient, type VoiceState, EmbedBuilder, Client } from 'discord.js';
+import { WebhookClient, type VoiceState, EmbedBuilder } from 'discord.js';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -12,24 +12,28 @@ export class VoiceStateListener extends Listener {
             event: 'voiceStateUpdate'
         });
     }
-    run(oldUser: VoiceState, newUser: VoiceState, client: Client) {
+    run(oldUser: VoiceState, newUser: VoiceState) {
 
         const webhookVoice = new WebhookClient({ url: `${process.env.VOICE_WEBHOOK}` })
 
-        let embed = new EmbedBuilder()
-            .setTitle('Nouvelle personne en vocal')
+        let voiceEmbed = new EmbedBuilder()
             .setTimestamp()
 
         let newUserChannel = newUser.channelId;
         let oldUserChannel = oldUser.channelId;
 
         if (oldUserChannel == undefined && newUserChannel !== undefined) {
-            embed.addFields({
-                name: `${newUser.member?.nickname}`,
-                value: `A rejoint le salon ${newUser.channel}`
+            voiceEmbed.setTitle(`${newUser.member?.nickname} est en vocal.`)
+            voiceEmbed.addFields({
+                name: `Salon`,
+                value: `${newUser.channel}`
             })
-            embed.setThumbnail(`${newUser.member?.displayAvatarURL({ size: 1024 })}`)
-            webhookVoice.send({ embeds: [embed] })
+            voiceEmbed.addFields({
+                name: `Activité du salon`,
+                value: `${newUser.channel?.members.size} Membre(s)`
+            })
+            voiceEmbed.setThumbnail(`${newUser.member?.displayAvatarURL({ size: 1024 })}`)
+            webhookVoice.send({ embeds: [voiceEmbed] })
             console.log("Joined VC")
         }
         else if (newUserChannel == undefined) {
