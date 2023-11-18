@@ -1,5 +1,5 @@
-import { Listener } from '@sapphire/framework';
-import { Client, EmbedBuilder, GuildMember, WebhookClient } from 'discord.js';
+import { Events, Listener } from '@sapphire/framework';
+import { GuildMember, TextChannel } from 'discord.js';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -9,11 +9,19 @@ export class GuildMemberAddListener extends Listener {
         super(context, {
             ...options,
             once: false,
-            event: 'guildMemberAdd'
+            event: Events.GuildMemberAdd
         });
     }
     run(member: GuildMember) {
-        console.log(member)
+        const chanID = "1145415930969604208";
+
+        console.log(member);
+
+        const message = `Welcome to server, ${member.user.username}`;
+
+        const channel = member.guild.channels.cache.get(chanID);;
+
+        (channel as TextChannel).send(message);
     }
 
 }

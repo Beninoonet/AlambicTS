@@ -5,6 +5,7 @@ export class HelpCommand extends Command {
     public constructor(context: Command.Context, options: Command.Options) {
         super(context, {
             ...options,
+            requiredClientPermissions: "SendMessages"
         });
     }
 
