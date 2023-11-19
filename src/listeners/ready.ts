@@ -18,10 +18,12 @@ export class ReadyListener extends Listener {
         this.container.logger.info(`Successfully logged in as ${username} (${id})`);
         client.user?.setActivity(`Lov U`, { type: ActivityType.Watching })
 
+        /* Logging */
+
         const LogHook = new WebhookClient({ url: `${process.env.LOGS_WEBHOOK}` })
         const Logs = new EmbedBuilder()
             .setColor('Green')
-            .setTitle(`🟢 ${username}'s System`)
+            .setTitle(`🟢 ${username}'s System | Logs`)
             .setDescription(`ID : ${id}`)
             .addFields({
                 name: `🛜 Service`,
