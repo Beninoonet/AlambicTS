@@ -18,7 +18,7 @@ export class ClearCommand extends Command {
                 .setDescription("Permet d'effacer un nombre de messages précis ")
                 .addNumberOption(option => {
                     return option
-                        .setName('nombre')
+                        .setName('amount')
                         .setRequired(true)
                         .setDescription('Spécifié le nombre de message à supprimer')
                         .setMinValue(1)
@@ -28,7 +28,7 @@ export class ClearCommand extends Command {
 
     public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
 
-        const amount = interaction.options.getNumber('nombre');
+        const amount = interaction.options.getNumber('amount');
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: `${interaction.client.user.username}`, iconURL: `${interaction.client.user.displayAvatarURL()}` })
@@ -36,10 +36,20 @@ export class ClearCommand extends Command {
             .setTimestamp()
 
         if (amount) {
+            /* DELETE MESSAGE */
             (interaction.channel as TextChannel).bulkDelete(amount, true);
-            embed.setTitle(`${amount} message(s) supprimé(s)`)
-            embed.addFields({ name: `Commande effecuté par`, value: `Salon: ${interaction.user.displayName}` })
-        }
 
+            /* EMBED FORTIFICATION */
+            embed.setTitle(`${amount} message(s) supprimé(s)`)
+            embed.addFields({ name: `Commande effecuté par`, value: `${interaction.user}` })
+                .setThumbnail(`${interaction.user.displayAvatarURL()}`)
+        };
+
+        interaction.reply({
+            embeds: [embed]
+        }).then(msg => {
+            setTimeout(() => msg.delete(), 5000);
+            this.container.logger.info(`${interaction.commandName} erased last message without problem`)
+        })
     }
 }
