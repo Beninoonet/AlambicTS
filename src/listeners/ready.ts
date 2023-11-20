@@ -1,6 +1,7 @@
 import { Events, Listener } from '@sapphire/framework';
 import { ActivityType, Client, EmbedBuilder, WebhookClient } from 'discord.js';
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 
 export class ReadyListener extends Listener {
