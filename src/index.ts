@@ -1,7 +1,7 @@
 import { SapphireClient } from '@sapphire/framework';
 import { GatewayIntentBits } from 'discord.js';
-import * as dotenv from 'dotenv';
 
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 const client = new SapphireClient({

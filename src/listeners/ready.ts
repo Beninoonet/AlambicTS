@@ -1,7 +1,6 @@
 import { Events, Listener } from '@sapphire/framework';
 import { ActivityType, Client, EmbedBuilder, WebhookClient } from 'discord.js';
 import * as dotenv from 'dotenv';
-
 dotenv.config();
 
 export class ReadyListener extends Listener {
@@ -13,7 +12,7 @@ export class ReadyListener extends Listener {
         });
 
     }
-    run(client: Client) {
+    async run(client: Client) {
         const { username, id } = client.user!;
         this.container.logger.info(`Successfully logged in as ${username} (${id})`);
         client.user?.setActivity(`Lov U`, { type: ActivityType.Watching })
@@ -54,6 +53,7 @@ export class ReadyListener extends Listener {
         LogHook.send({
             embeds: [Logs]
         })
+
     }
 
 }
