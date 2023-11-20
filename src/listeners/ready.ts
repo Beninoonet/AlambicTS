@@ -1,8 +1,9 @@
 import { Events, Listener } from '@sapphire/framework';
 import { ActivityType, Client, EmbedBuilder, WebhookClient } from 'discord.js';
-import * as dotenv from 'dotenv';
 
+import * as dotenv from 'dotenv';
 dotenv.config();
+
 
 export class ReadyListener extends Listener {
     public constructor(context: Listener.Context, options: Listener.Options) {
@@ -14,12 +15,13 @@ export class ReadyListener extends Listener {
 
     }
     async run(client: Client) {
+
+        // Console LOG
         const { username, id } = client.user!;
         this.container.logger.info(`Successfully logged in as ${username} (${id})`);
         client.user?.setActivity(`Lov U`, { type: ActivityType.Watching })
 
         /* Logging */
-
         const LogHook = new WebhookClient({ url: `${process.env.LOGS_WEBHOOK}` })
         const Logs = new EmbedBuilder()
             .setColor('Green')

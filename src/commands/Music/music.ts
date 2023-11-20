@@ -1,5 +1,5 @@
-import { Command, Err, err } from '@sapphire/framework';
-import { EmbedBuilder, GuildMember } from 'discord.js';
+import { Command } from '@sapphire/framework';
+
 
 export class MusicCommand extends Command {
     public constructor(context: Command.Context, options: Command.Options) {
@@ -24,11 +24,9 @@ export class MusicCommand extends Command {
         );
     }
 
-    public chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+    public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+        const guildId = interaction.client.guilds.cache.get(`${interaction.guild?.id}`)
+        const member = guildId?.members.cache.get(`${interaction.member?.user.id}`)
         const query = interaction.options.getString('query');
-        interaction.reply({
-            content: `IN DEVELOPMENT : ${query}`,
-            ephemeral: true
-        })
     }
 }
