@@ -25,8 +25,9 @@ export class MusicCommand extends Command {
     }
 
     public chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+        const query = interaction.options.getString('query');
         interaction.reply({
-            content: "IN DEVELOPEMENT",
+            content: `IN DEVELOPMENT : ${query}`,
             ephemeral: true
         })
     }
