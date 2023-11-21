@@ -15,6 +15,8 @@
   "dependencies": {
     "@sapphire/framework": "^4.7.2",
     "discord.js": "^14.13.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "shoukaku": "^3.4.2",
+    "ytdl-core": "^4.11.5"
   }
 }

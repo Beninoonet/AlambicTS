@@ -13,5 +13,6 @@ const client = new SapphireClient({
     ],
 });
 
-client.login(process.env.TOKEN);
 
+
+client.login(process.env.TOKEN);
