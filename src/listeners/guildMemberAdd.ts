@@ -1,7 +1,7 @@
 import { Events, Listener } from '@sapphire/framework';
 import { GuildMember, TextChannel } from 'discord.js';
-import * as dotenv from 'dotenv';
 
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 export class GuildMemberAddListener extends Listener {
@@ -13,15 +13,22 @@ export class GuildMemberAddListener extends Listener {
         });
     }
     run(member: GuildMember) {
-        const chanID = "1145415930969604208";
+
+        /* VAR CHANNEL WELCOME*/
+        const chanID = process.env.WLC_ID;
+        const wlcChan = member.guild.channels.cache.get(`${chanID}`);
+        /* ADDING A ROLE */
+        member.roles.add('1200453898813575218');
+        (wlcChan as TextChannel).send({
+            content: `Bienvenue ${member} sur ${member.guild.name}`
+        })
+
+
 
         console.log(member);
 
-        const message = `Welcome to server, ${member.user.username}`;
 
-        const channel = member.guild.channels.cache.get(chanID);;
 
-        (channel as TextChannel).send(message);
     }
 
 }
