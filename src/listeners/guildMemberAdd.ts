@@ -23,12 +23,6 @@ export class GuildMemberAddListener extends Listener {
             content: `Bienvenue ${member} sur ${member.guild.name}`
         })
 
-
-
-        console.log(member);
-
-
-
     }
 
 }
