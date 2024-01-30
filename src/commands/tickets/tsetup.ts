@@ -26,18 +26,29 @@ export class ClearCommand extends Command {
             .setDescription("Vous avez besoin de l'aide d'un modérateur ? N'hésite pas à créer un ticket !")
             .setColor('Red')
 
-        const createticket = new ButtonBuilder()
-            .setCustomId('create-ticket')
-            .setEmoji('📕')
-            .setLabel('Ouvrir un ticket')
-            .setStyle(ButtonStyle.Danger);
 
-        const row = new ActionRowBuilder()
-            .addComponents(createticket);
 
-        await interaction.reply({
-            embeds: [embed]
+        const tickets = new ActionRowBuilder<ButtonBuilder>({
+            components: [
+                new ButtonBuilder({
+                    custom_id: "ticket",
+                    label: "Create a ticket",
+                    style: ButtonStyle.Danger
+                })
+            ]
         })
+
+        interaction.reply({
+            content: `Mise en place du système de tickets`,
+            ephemeral: true
+        })
+
+        await interaction.channel?.send({
+            embeds: [embed],
+            components: [tickets]
+        })
+
+
 
     }
 }

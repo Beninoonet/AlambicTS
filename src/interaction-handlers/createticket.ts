@@ -10,7 +10,7 @@ export class ButtonHandler extends InteractionHandler {
     }
 
     public override parse(interaction: ButtonInteraction) {
-        if (interaction.customId !== 'create-ticket') return this.none();
+        if (interaction.customId !== 'ticket') return this.none();
 
         return this.some();
     }
