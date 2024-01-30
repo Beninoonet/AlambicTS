@@ -1,5 +1,5 @@
 import { InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
-import type { ButtonInteraction } from 'discord.js';
+import { ChannelType, Guild, PermissionsBitField, TextChannel, type ButtonInteraction } from 'discord.js';
 
 export class ButtonHandler extends InteractionHandler {
     public constructor(ctx: InteractionHandler.Context, options: InteractionHandler.Options) {
@@ -16,10 +16,32 @@ export class ButtonHandler extends InteractionHandler {
     }
 
     public async run(interaction: ButtonInteraction) {
-        await interaction.reply({
-            content: 'Ui',
-            // Let's make it so only the person who pressed the button can see this message!
-            ephemeral: true
-        });
+        const category = interaction.guild?.channels.cache.find(channel => channel.type == ChannelType.GuildCategory && channel.name === "tickets")
+
+        if (!category) {
+            interaction.reply({
+                content: "La catégories 'tickets' n'existe pas"
+            });
+        }
+        else {
+            const ticketCh = interaction.guild?.channels.create({
+                name: `Ticket de ${interaction.user.username}`,
+                type: ChannelType.GuildText,
+                parent: category.id,
+                permissionOverwrites: [
+                    {
+                        id: interaction.user.id,
+                        allow: [PermissionsBitField.Flags.ViewChannel]
+                    },
+                    {
+                        id: interaction.user.id,
+                        allow: [PermissionsBitField.Flags.SendMessages]
+                    }
+                ]
+            });
+            (await ticketCh)?.send({
+                content: `Comment pouvons-nous t'aider ? ${interaction.user.username}`
+            })
+        }
     }
 }
