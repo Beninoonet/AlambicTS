@@ -18,7 +18,7 @@ export class GuildMemberAddListener extends Listener {
         const chanID = process.env.WLC_ID;
         const wlcChan = member.guild.channels.cache.get(`${chanID}`);
         /* ADDING A ROLE */
-        member.roles.add('1200453898813575218');
+        member.roles.add(`${process.env.DEFAULT_ID}`);
         (wlcChan as TextChannel).send({
             content: `Bienvenue ${member} sur ${member.guild.name}`
         })

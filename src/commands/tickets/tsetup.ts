@@ -7,7 +7,7 @@ export class ClearCommand extends Command {
         super(context, {
             ...options,
             requiredUserPermissions: 'Administrator',
-            requiredClientPermissions: 'Administrator'
+            requiredClientPermissions: 'SendMessages'
         });
     }
 
@@ -32,21 +32,22 @@ export class ClearCommand extends Command {
             components: [
                 new ButtonBuilder({
                     custom_id: "ticket",
-                    label: "Create a ticket",
-                    style: ButtonStyle.Danger
+                    label: "Créer un ticket",
+                    style: ButtonStyle.Danger,
+                    emoji: "👮"
                 })
             ]
-        })
+        });
 
         interaction.reply({
             content: `Mise en place du système de tickets`,
             ephemeral: true
-        })
+        });
 
         await interaction.channel?.send({
             embeds: [embed],
             components: [tickets]
-        })
+        });
 
 
 
