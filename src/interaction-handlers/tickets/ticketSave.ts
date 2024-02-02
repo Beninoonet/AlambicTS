@@ -22,8 +22,11 @@ export class ButtonHandler extends InteractionHandler {
         const ChannelId = interaction.channel?.id
         const channelfind = interaction.guild?.channels.cache.find(ch => ch.id === `${ChannelId}`)
         const channel = (await channelfind as TextChannel)
+        let category = interaction.guild?.channels.cache.find(channel => channel.type == ChannelType.GuildCategory && channel.name === "tickets")
 
-
+        if (!category && channel.parent === category) {
+            interaction.reply(`Ce ticket n'est pas dans la catégories "ticket"`)
+        };
 
         const Embed = new EmbedBuilder()
             .setTitle(`${channel.name}`)
@@ -32,16 +35,6 @@ export class ButtonHandler extends InteractionHandler {
         const attachment = await createTranscript(channel, {
             limit: -1,
             filename: `${channel.name}.html`
-        });
-
-        const directlink = new ActionRowBuilder<ButtonBuilder>({
-            components: [
-                new ButtonBuilder({
-                    label: "Direct Link",
-                    style: ButtonStyle.Link,
-                    url: `${attachment}.html`
-                })
-            ]
         });
 
         const Member = interaction.member?.user
@@ -54,6 +47,9 @@ export class ButtonHandler extends InteractionHandler {
             embeds: [
                 Embed.setDescription(`Le ticket est désormais enregistré et va fermer d'ici peu. Transcription [disponible ici](${(await Message).url})`)
             ]
-        });
+        }).then(msg => {
+            setTimeout(() => msg.delete(), 5000);
+            this.container.logger.info(`Transcription enregistré`)
+        })
     }
 }
