@@ -1,5 +1,5 @@
 import { InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, EmbedBuilder, WebhookClient, type ButtonInteraction } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, EmbedBuilder, PermissionOverwrites, WebhookClient, type ButtonInteraction } from 'discord.js';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -28,7 +28,17 @@ export class ButtonHandler extends InteractionHandler {
 
             interaction.guild?.channels.create({
                 name: 'tickets',
-                type: ChannelType.GuildCategory
+                type: ChannelType.GuildCategory,
+                permissionOverwrites: [
+                    {
+                        id: `${process.env.MOD_ID}`,
+                        allow: ["SendMessages", "ViewChannel", "ReadMessageHistory"]
+                    },
+                    {
+                        id: `${interaction.guild.id}`,
+                        deny: ["SendMessages", "ViewChannel", "ReadMessageHistory"]
+                    }
+                ]
             })
         }
         else {
@@ -45,6 +55,7 @@ export class ButtonHandler extends InteractionHandler {
                     name: interaction.client.user.username,
                     iconURL: `${interaction.client.user.displayAvatarURL()}`
                 });
+            let UserId = interaction.member?.user.id
             const ID = Math.floor(Math.random() * 1000) + 5;
             let ticketCh = interaction.guild?.channels.create({
                 name: `${customId}-${ID}`,
@@ -52,7 +63,7 @@ export class ButtonHandler extends InteractionHandler {
                 parent: category.id,
                 permissionOverwrites: [
                     {
-                        id: `${interaction.member?.user.id}`,
+                        id: `${UserId}`,
                         allow: ["SendMessages", "ViewChannel", "ReadMessageHistory"]
                     },
                     {
@@ -65,7 +76,6 @@ export class ButtonHandler extends InteractionHandler {
                     }
                 ]
             });
-
             /** Create a buttonOps */
             const buttonOps = new ActionRowBuilder<ButtonBuilder>({
                 components: [
@@ -74,18 +84,6 @@ export class ButtonHandler extends InteractionHandler {
                         label: "Sauvegarder et fermer le ticket",
                         style: ButtonStyle.Success,
                         emoji: "💾"
-                    }),
-                    new ButtonBuilder({
-                        custom_id: "lock",
-                        label: "Verrouiller",
-                        style: ButtonStyle.Secondary,
-                        emoji: "🔒"
-                    }),
-                    new ButtonBuilder({
-                        custom_id: "unlock",
-                        label: "Déverrouiller",
-                        style: ButtonStyle.Secondary,
-                        emoji: "🔓"
                     })
                 ]
             });
@@ -117,5 +115,6 @@ export class ButtonHandler extends InteractionHandler {
 
 
         }
+
     }
 }
