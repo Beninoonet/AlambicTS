@@ -3,6 +3,8 @@ import { GatewayIntentBits } from 'discord.js';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+
+
 const client = new SapphireClient({
     intents: [
         GatewayIntentBits.MessageContent,
@@ -12,7 +14,5 @@ const client = new SapphireClient({
         GatewayIntentBits.GuildMembers,
     ],
 });
-
-
 
 client.login(process.env.TOKEN);
